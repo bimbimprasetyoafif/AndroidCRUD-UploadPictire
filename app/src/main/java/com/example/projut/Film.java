@@ -66,23 +66,17 @@ public class Film extends Fragment{
 
     private void createFilm(){
 
-        if (TextUtils.isEmpty(judul.getText().toString().trim())) {
+        if (TextUtils.isEmpty(judul.getText().toString().trim()) & TextUtils.isEmpty(tahun.getText().toString().trim())) {
             judul.setError("Silahkan masukkan judul");
-            judul.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(tahun.getText().toString().trim())) {
             tahun.setError("Silahkan masukkan tahun");
+            judul.requestFocus();
             tahun.requestFocus();
             return;
         }
 
-        String Judul = judul.getText().toString();
-        int Tahun = Integer.parseInt(tahun.getText().toString());
-
         HashMap<String, Object> payload = new HashMap<>();
-        payload.put("judul",Judul);
-        payload.put("tahun",Tahun);
+        payload.put("judul",judul.getText().toString());
+        payload.put("tahun",Integer.parseInt(tahun.getText().toString()));
 
         Retrofit retrofit = Client.getClient();
         retrofit.create(ApiRequest.class).postFilm(payload)
@@ -140,24 +134,23 @@ public class Film extends Fragment{
 
     public static void updateFilm(String i){
 
-        if (TextUtils.isEmpty(judul.getText().toString().trim())) {
+        HashMap<String, Object> payload = new HashMap<>();
+
+        if (TextUtils.isEmpty(judul.getText().toString().trim()) & TextUtils.isEmpty(tahun.getText().toString().trim())) {
             judul.setError("Silahkan masukkan judul");
-            judul.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(tahun.getText().toString().trim())) {
             tahun.setError("Silahkan masukkan tahun");
+            judul.requestFocus();
             tahun.requestFocus();
             return;
         }
 
-        String Judul = judul.getText().toString();
-        int Tahun = Integer.parseInt(tahun.getText().toString());
-
-        HashMap<String, Object> payload = new HashMap<>();
-        payload.put("judul",Judul);
-        payload.put("tahun",Tahun);
-
+        if (!TextUtils.isEmpty(judul.getText().toString().trim())) {
+            payload.put("judul",judul.getText().toString());
+        }
+        if (!TextUtils.isEmpty(tahun.getText().toString().trim())) {
+            payload.put("tahun",Integer.parseInt(tahun.getText().toString()));
+        }
+        
         Retrofit retrofit = Client.getClient();
         retrofit.create(ApiRequest.class).updateFilm(i,payload)
                 .enqueue(new Callback<ModelFilm>() {
