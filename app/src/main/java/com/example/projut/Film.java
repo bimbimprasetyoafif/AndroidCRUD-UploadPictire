@@ -66,11 +66,8 @@ public class Film extends Fragment{
 
     private void createFilm(){
 
-        if (TextUtils.isEmpty(judul.getText().toString().trim()) & TextUtils.isEmpty(tahun.getText().toString().trim())) {
-            judul.setError("Silahkan masukkan judul");
-            tahun.setError("Silahkan masukkan tahun");
-            judul.requestFocus();
-            tahun.requestFocus();
+        if (TextUtils.isEmpty(judul.getText().toString().trim()) | TextUtils.isEmpty(tahun.getText().toString().trim())) {
+            Toast.makeText(getActivity(), "Lengkapi data", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -150,7 +147,7 @@ public class Film extends Fragment{
         if (!TextUtils.isEmpty(tahun.getText().toString().trim())) {
             payload.put("tahun",Integer.parseInt(tahun.getText().toString()));
         }
-        
+
         Retrofit retrofit = Client.getClient();
         retrofit.create(ApiRequest.class).updateFilm(i,payload)
                 .enqueue(new Callback<ModelFilm>() {
